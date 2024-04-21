@@ -35,7 +35,15 @@ const Cards = () => {
     );
   }
 
-  if (!blogs) return <button onClick={() => isFetching(true)}>More</button>;
+  if (!blogs)
+    return (
+      <button
+        className="rounded-sm bg-cyan-500 px-4 py-2 font-medium text-white"
+        onClick={() => isFetching(true)}
+      >
+        Show More Blog
+      </button>
+    );
 
   return (
     <>
