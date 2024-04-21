@@ -1,4 +1,5 @@
 import Cards from "../components/Cards";
+import Provinces from "../components/Provinces";
 
 const HomePage = () => {
   return (
@@ -8,6 +9,7 @@ const HomePage = () => {
       </h1>
 
       <Cards />
+      <Provinces />
     </>
   );
 };

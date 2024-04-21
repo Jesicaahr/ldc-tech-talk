@@ -1,11 +1,20 @@
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <Navbar />
-      <HomePage />
+      <QueryClientProvider client={queryClient}>
+        <Navbar />
+        <HomePage />
+      </QueryClientProvider>
     </>
   );
 }

@@ -1,18 +1,13 @@
 /* eslint-disable react/prop-types */
-function Card({ product }) {
+function Card({ image, title, description }) {
   return (
     <>
       <div className="card overflow-hidden rounded-md bg-pink-400 px-3 py-3 ">
         <div className="card-body">
           <div className="card-body">
-            <img
-              className="h-[200px] w-full object-cover"
-              src={product.image}
-            ></img>
-            <h2 className="text mt-1  w-full text-lg font-bold">
-              {product.title}
-            </h2>
-            <p className="text my-5 line-clamp-2"> {product.desc} </p>
+            <img className="h-[200px] w-full object-cover" src={image}></img>
+            <h2 className="text mt-1  w-full text-lg font-bold">{title}</h2>
+            <p className="text my-5 line-clamp-2"> {description} </p>
             <button className="rounded-md bg-blue-500 px-4 py-2 font-semibold text-white">
               More...
             </button>

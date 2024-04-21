@@ -1,43 +1,49 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Card, { CardSkeleton } from "./Card";
+import { useQuery } from "@tanstack/react-query";
 
 const Cards = () => {
   const limitData = 3;
-  const [products, setProducts] = useState();
-  const [loading, setLoading] = useState(true);
+  const [fetching, isFetching] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch(`http://localhost:4321/api/blogs`);
-      // const res = await fetch(
-      //   `https://dummyjson.com/products?limit=${limitData}`,
-      // );
-      const jsonData = await res.json();
+  const { data: blogs, isLoading } = useQuery({
+    queryKey: ["BLOGS"],
+    queryFn: async () => {
+      return await fetch("http://localhost:4321/api/blogs")
+        .then((res) => res.json())
+        .catch((err) => console.log(err));
+    },
+    select: (data) =>
+      data.map((blog) => ({
+        id: blog._id,
+        title: blog.title,
+        description: blog.desc,
+        image: blog.image,
+      })),
+    enabled: fetching,
+  });
 
-      setProducts(jsonData);
-      setLoading(false);
-    };
+  if (isLoading) {
+    return (
+      <div className="w-full bg-pink-100 px-12 py-3 text-red-950">
+        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {Array.from(Array(limitData).keys()).map((index) => {
+            return <CardSkeleton key={index} />;
+          })}
+        </div>
+      </div>
+    );
+  }
 
-    fetchData();
-  }, []);
+  if (!blogs) return <button onClick={() => isFetching(true)}>More</button>;
 
   return (
     <>
       <div className="w-full bg-pink-100 px-12 py-3 text-red-950">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {loading ? (
-            <>
-              {Array.from(Array(limitData).keys()).map((index) => {
-                return <CardSkeleton key={index} />;
-              })}
-            </>
-          ) : (
-            <>
-              {products.map((product) => (
-                <Card key={product._id} product={product} />
-              ))}
-            </>
-          )}
+          {blogs.map((blog) => (
+            <Card key={blog.id} {...blog} />
+          ))}
         </div>
       </div>
     </>
