@@ -38,7 +38,7 @@ const Cards = () => {
   if (!blogs)
     return (
       <button
-        className="rounded-sm bg-cyan-500 px-4 py-2 font-medium text-white"
+        className="rounded-sm bg-cyan-500 px-4 py-2 font-medium text-white hover:bg-cyan-600"
         onClick={() => isFetching(true)}
       >
         Show More Blog

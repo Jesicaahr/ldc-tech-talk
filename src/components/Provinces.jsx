@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const Provinces = () => {
-  const [fetching, isFetching] = useState(false);
+  const [provinceName, setProvinceName] = useState("");
   const [provinceId, setProvinceId] = useState();
 
-  const { data: provinces } = useQuery({
+  const { data: provinces, isLoading: isLoadingProvinces } = useQuery({
     queryKey: ["PROVINCES"],
     queryFn: async () => {
       return await fetch(
@@ -15,8 +15,9 @@ const Provinces = () => {
         .catch((err) => console.log(err));
     },
   });
-  const { data: regency, isLoading } = useQuery({
-    queryKey: ["REGENCY", provinceId],
+
+  const { data: regencies, isLoading: isLoadingRegencies } = useQuery({
+    queryKey: ["REGENCIES", provinceId],
     queryFn: async () => {
       return await fetch(
         `https://emsifa.github.io/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
@@ -24,27 +25,53 @@ const Provinces = () => {
         .then((res) => res.json())
         .catch((err) => console.log(err));
     },
-    enabled: fetching,
+    enabled: Boolean(provinceId),
   });
-  console.log(provinces);
-  //   console.log(regency);
+  console.log(provinceId);
+  console.log(regencies);
 
-  //   if (provinceId) isFetching(true);
+  if (isLoadingProvinces) return <p>DATA PROVINCES LOADING . . . </p>;
+  if (!provinces) return <p>DATA PROVINCE NOT FOUND</p>;
 
-  if (!provinces) return <p>DATA NOT FOUND</p>;
-  //   if (!regency) return <p>REGENCY NOT FOUND</p>;
+  function renderRegencies() {
+    if (isLoadingRegencies) return <p>DATA REGENCY LOADING</p>;
+    if (!regencies) return <p>DATA REGENCY FOR {provinceName} NOT FOUND</p>;
+
+    return regencies.map((regency) => (
+      <li key={regency.id}>
+        <button className="mb-2 rounded-md bg-emerald-600 px-3 py-1 text-white hover:bg-emerald-500">
+          {regency.name}
+        </button>
+      </li>
+    ));
+  }
+
   return (
     <>
-      <h1 className="mt-3">PROVINCES</h1>
-      <ul>
-        {provinces.map((province) => (
-          <li key={province.id}>
-            <button onClick={() => setProvinceId(province.id)}>
-              {province.id} - {province.name}{" "}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="flex gap-x-12">
+        <div>
+          <h1 className="mb-2 mt-3 text-lg font-medium">PROVINCE</h1>
+          <ul>
+            {provinces.map((province) => (
+              <li key={province.id}>
+                <button
+                  className="mb-2 rounded-md bg-teal-800 px-3 py-1 text-white hover:bg-teal-700"
+                  onClick={() => {
+                    setProvinceId(province.id);
+                    setProvinceName(province.name);
+                  }}
+                >
+                  {province.id} - {province.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h1 className="mb-2 mt-3 text-lg font-medium">REGENCY</h1>
+          <ul>{renderRegencies()}</ul>
+        </div>
+      </div>
     </>
   );
 };
