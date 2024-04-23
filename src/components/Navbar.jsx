@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,20 +40,20 @@ const Navbar = () => {
         >
           <ul className="list-reset flex-1 items-center justify-end md:flex">
             <li className="mr-6">
-              <a
+              <Link
+                to={"/"}
                 className="inline-block px-4 py-2 text-lg font-semibold text-violet-950 no-underline hover:text-white"
-                href="#"
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li className="mr-6">
-              <a
+              <Link
+                to={"/province"}
                 className="inline-block px-4 py-2 text-lg font-semibold text-violet-950 no-underline hover:text-white"
-                href="#"
               >
-                Product
-              </a>
+                Province
+              </Link>
             </li>
             <li className="mr-6">
               <a

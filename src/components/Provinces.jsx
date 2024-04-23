@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 
 const Provinces = () => {
   const [provinceName, setProvinceName] = useState("");
   const [provinceId, setProvinceId] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setProvinceId(searchParams.get("provinceId"));
+  }, [searchParams]);
 
   const { data: provinces, isLoading: isLoadingProvinces } = useQuery({
     queryKey: ["PROVINCES"],
@@ -54,6 +60,7 @@ const Provinces = () => {
                   onClick={() => {
                     setProvinceId(province.id);
                     setProvinceName(province.name);
+                    setSearchParams({ provinceId: province.id });
                   }}
                 >
                   {province.id} - {province.name}
