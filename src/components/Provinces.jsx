@@ -9,6 +9,7 @@ const Provinces = () => {
 
   useEffect(() => {
     setProvinceId(searchParams.get("provinceId"));
+    setProvinceName(searchParams.get("provinceName"));
   }, [searchParams]);
 
   const { data: provinces, isLoading: isLoadingProvinces } = useQuery({
@@ -60,7 +61,10 @@ const Provinces = () => {
                   onClick={() => {
                     setProvinceId(province.id);
                     setProvinceName(province.name);
-                    setSearchParams({ provinceId: province.id });
+                    setSearchParams({
+                      provinceId: province.id,
+                      provinceName: province.name,
+                    });
                   }}
                 >
                   {province.id} - {province.name}
