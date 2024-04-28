@@ -22,6 +22,7 @@ const Provinces = () => {
         .catch((err) => console.log(err));
     },
   });
+  // Test git
   const { data: regencies, isLoading: isLoadingRegencies } = useQuery({
     queryKey: ["REGENCIES", provinceId],
     queryFn: async () => {
@@ -53,6 +54,7 @@ const Provinces = () => {
       <div className="flex gap-x-12">
         <div>
           <h1 className="mb-2 mt-3 text-lg font-medium">PROVINCE</h1>
+
           <ul>
             {provinces.map((province) => (
               <li key={province.id}>
