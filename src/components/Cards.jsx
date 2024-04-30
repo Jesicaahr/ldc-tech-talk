@@ -25,13 +25,11 @@ const Cards = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full bg-pink-100 px-12 py-3 text-red-950">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {Array.from(Array(limitData).keys()).map((index) => {
-            return <CardSkeleton key={index} />;
-          })}
-        </div>
-      </div>
+      <>
+        {Array.from(Array(limitData).keys()).map((index) => {
+          return <CardSkeleton key={index} />;
+        })}
+      </>
     );
   }
 
@@ -47,13 +45,9 @@ const Cards = () => {
 
   return (
     <>
-      <div className="w-full bg-pink-100 px-12 py-3 text-red-950">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {blogs.map((blog) => (
-            <Card key={blog.id} {...blog} />
-          ))}
-        </div>
-      </div>
+      {blogs.map((blog) => (
+        <Card key={blog.id} {...blog} />
+      ))}
     </>
   );
 };

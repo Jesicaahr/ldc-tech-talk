@@ -9,7 +9,9 @@ function Layout() {
     <>
       <QueryClientProvider client={queryClient}>
         <Navbar />
-        <Outlet />
+        <div className="px-12 py-8">
+          <Outlet />
+        </div>
       </QueryClientProvider>
     </>
   );

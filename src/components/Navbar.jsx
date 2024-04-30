@@ -56,12 +56,12 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="mr-6">
-              <a
+              <Link
+                to={"/form"}
                 className="inline-block px-4 py-2 text-lg font-semibold text-violet-950 no-underline hover:text-white"
-                href="#"
               >
-                About
-              </a>
+                Form
+              </Link>
             </li>
           </ul>
         </div>

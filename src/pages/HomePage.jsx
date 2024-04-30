@@ -1,16 +1,14 @@
 import Cards from "../components/Cards";
-import Provinces from "../components/Provinces";
+import CardWrapper from "../components/CardWrapper";
 
 const HomePage = () => {
   return (
     <>
-      <div className="px-12 py-8">
-        <h1 className="text bg-white py-4 text-xl font-bold text-red-700">
-          GRID PRODUCT
-        </h1>
-        <Cards />
-        <Provinces />
-      </div>
+      <h1 className="text bg-white py-4 text-xl font-bold text-red-700">
+        GRID PRODUCT
+      </h1>
+      {/* <Cards /> */}
+      <CardWrapper />
     </>
   );
 };

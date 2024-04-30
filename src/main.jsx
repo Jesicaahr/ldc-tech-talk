@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import ProvincePage from "./pages/ProvincePage.jsx";
+import FormPage from "./pages/FormPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/province", element: <ProvincePage /> },
+      { path: "/form", element: <FormPage /> },
     ],
   },
 ]);

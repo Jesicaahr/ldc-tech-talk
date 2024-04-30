@@ -4,10 +4,8 @@ import Provinces from "../components/Provinces";
 const ProvincePage = () => {
   return (
     <>
-      <div className="px-12 py-8">
-        <ProvinceTitle />
-        <Provinces />
-      </div>
+      <ProvinceTitle />
+      <Provinces />
     </>
   );
 };
