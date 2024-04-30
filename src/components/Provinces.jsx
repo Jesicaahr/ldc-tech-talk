@@ -1,41 +1,19 @@
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { useGetProvince } from "../api/useProvince";
+import { useGetRegency } from "../api/useRegency";
+import { useState } from "react";
+import { PropTypes } from "prop-types";
 
-const Provinces = () => {
+const Provinces = (props) => {
+  const { provinceId } = props;
   const [provinceName, setProvinceName] = useState("");
-  const [provinceId, setProvinceId] = useState();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    setProvinceId(searchParams.get("provinceId"));
-    setProvinceName(searchParams.get("provinceName"));
-  }, [searchParams]);
+  const { data: provinces, isLoading: isLoadingProvinces } = useGetProvince();
 
-  const { data: provinces, isLoading: isLoadingProvinces } = useQuery({
-    queryKey: ["PROVINCES"],
-    queryFn: async () => {
-      return await fetch(
-        "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json",
-      )
-        .then((res) => res.json())
-        .catch((err) => console.log(err));
-    },
+  const { data: regencies, isLoading: isLoadingRegencies } = useGetRegency({
+    provinceId,
   });
-  // Test git
-  const { data: regencies, isLoading: isLoadingRegencies } = useQuery({
-    queryKey: ["REGENCIES", provinceId],
-    queryFn: async () => {
-      return await fetch(
-        `https://emsifa.github.io/api-wilayah-indonesia/api/regencies/${provinceId}.json`,
-      )
-        .then((res) => res.json())
-        .catch((err) => console.log(err));
-    },
-    enabled: Boolean(provinceId),
-  });
-  console.log("PROVINCE ID: ", provinceId);
-  console.log("DATA REGENCY: ", regencies);
 
   if (isLoadingProvinces) return <p>DATA PROVINCES LOADING . . . </p>;
   if (!provinces) return <p>DATA PROVINCE NOT FOUND</p>;
@@ -43,7 +21,7 @@ const Provinces = () => {
   function renderRegencies() {
     if (isLoadingRegencies) return <p>DATA REGENCY LOADING</p>;
     if (!regencies) return <p>DATA REGENCY FOR {provinceName} NOT FOUND</p>;
-    return regencies.map((regency) => (
+    return regencies?.map((regency) => (
       <li key={regency.id} className="mb-2 rounded-md py-1 text-sm ">
         {regency.name}
       </li>
@@ -53,19 +31,17 @@ const Provinces = () => {
     <>
       <div className="flex gap-x-12">
         <div>
-          <h1 className="mb-2 mt-3 text-lg font-medium">PROVINCE</h1>
+          <h1 className="mb-2 mt-3 font-bold">PROVINCE</h1>
 
           <ul>
-            {provinces.map((province) => (
+            {provinces?.map((province) => (
               <li key={province.id}>
                 <button
                   className="mb-2 rounded-md bg-teal-800 px-3 py-1 text-white hover:bg-teal-700"
                   onClick={() => {
-                    setProvinceId(province.id);
                     setProvinceName(province.name);
                     setSearchParams({
                       provinceId: province.id,
-                      provinceName: province.name,
                     });
                   }}
                 >
@@ -76,9 +52,7 @@ const Provinces = () => {
           </ul>
         </div>
         <div>
-          <h1 className="mb-2 mt-3 text-lg font-medium">
-            {provinceName} REGENCY
-          </h1>
+          <h1 className="mb-2 mt-3 font-bold">{provinceName} REGENCY</h1>
           <ul>{renderRegencies()}</ul>
         </div>
       </div>
@@ -87,3 +61,7 @@ const Provinces = () => {
 };
 
 export default Provinces;
+
+Provinces.propTypes = {
+  provinceId: PropTypes.string,
+};

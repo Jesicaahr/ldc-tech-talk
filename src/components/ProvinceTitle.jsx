@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { PropTypes } from "prop-types";
+import { useGetProvince } from "../api/useProvince";
 
-const ProvinceTitle = () => {
-  const [provinceName, setProvinceName] = useState("");
-  const [searchParams, setSearchParams] = useSearchParams();
+const ProvinceTitle = (props) => {
+  const provinceId = props?.provinceId;
+  const { data: province } = useGetProvince({
+    options: {
+      select: (data) => data.find((province) => province.id === provinceId),
+    },
+  });
 
-  useEffect(() => {
-    setProvinceName(searchParams.get("provinceName"));
-  }, [searchParams]);
-
-  console.log("PROVINCE NAME", provinceName);
+  if (!province) return null;
 
   return (
-    <>{provinceName ? <h1 className="font-bold">{provinceName}</h1> : null}</>
+    <>
+      {province.name ? (
+        <h1 className="text-lg font-medium">{province.name}</h1>
+      ) : null}
+    </>
   );
 };
 
 export default ProvinceTitle;
+
+ProvinceTitle.propTypes = {
+  provinceId: PropTypes.string,
+};

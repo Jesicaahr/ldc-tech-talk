@@ -45,7 +45,7 @@ const Cards = () => {
 
   return (
     <>
-      {blogs.map((blog) => (
+      {blogs?.map((blog) => (
         <Card key={blog.id} {...blog} />
       ))}
     </>
